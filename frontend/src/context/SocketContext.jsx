@@ -16,10 +16,9 @@ export const SocketProvider = ({ children }) => {
 
     if (!token || !user) return;
 
-    // ✅ Build WebSocket URL from VITE_API_URL
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-    const socketUrl = apiUrl.replace('/api', '').replace('http', 'ws');
-    // For production: https://backend.onrender.com → wss://backend.onrender.com
+    const baseUrl = apiUrl.replace('/api', '');
+    const socketUrl = baseUrl.replace('https://', 'wss://').replace('http://', 'ws://');
 
     console.log('🔌 Connecting to WebSocket:', socketUrl);
     const newSocket = io(socketUrl, {
@@ -28,8 +27,29 @@ export const SocketProvider = ({ children }) => {
     });
 
     setSocket(newSocket);
-    // ... rest of the code stays the same
+
+    newSocket.on('connect', () => {
+      console.log('🟢 WebSocket connected');
+      newSocket.emit('register-user', user._id);
+    });
+
+    newSocket.on('notification', (data) => {
+      setNotifications(prev => [...prev, data]);
+      toast.success(data.message, { duration: 5000 });
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('❌ WebSocket error:', error);
+    });
+
+    return () => {
+      newSocket.close();
+    };
   }, []);
 
-  // ... return provider
+  return (
+    <SocketContext.Provider value={{ socket, notifications, setNotifications }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
