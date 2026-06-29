@@ -43,7 +43,7 @@ const BudgetAlert = ({ transactions }) => {
       const { spent, limit } = newBudgets[cat];
       if (limit > 0) {
         const percentage = (spent / limit) * 100;
-        if (percentage >= 90) {
+        if (percentage >= 100) {
           newAlerts.push({ category: cat, spent, limit, percentage: Math.round(percentage) });
         } else if (percentage >= 70) {
           newWarnings.push({ category: cat, spent, limit, percentage: Math.round(percentage) });
