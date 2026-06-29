@@ -14,7 +14,8 @@ const { Server } = require('socket.io');
 app.use(helmet());
 // 2. CORS - Allow frontend only
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','https://managefinance-frontend.onrender.com',
+  'https://managefinance-backend.onrender.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key'],
