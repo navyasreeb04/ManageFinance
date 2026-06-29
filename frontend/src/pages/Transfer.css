@@ -1,0 +1,197 @@
+/* ===== TRANSFER HEADER ===== */
+.transfer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.transfer-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.back-btn {
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.transfer-subtitle {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+/* ===== PIN WARNING ===== */
+.pin-warning {
+  padding: 12px 16px;
+  background: #fef3c7;
+  border-radius: 8px;
+  border: 1px solid #f59e0b;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pin-warning span {
+  color: #92400e;
+  font-size: 14px;
+}
+
+.pin-warning-btn {
+  padding: 6px 16px;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* ===== PIN MODAL ===== */
+.pin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+}
+
+.pin-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dark .pin-modal {
+  background: #1e293b;
+}
+
+.pin-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.pin-modal-subtitle {
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pin-input-wrapper {
+  position: relative;
+}
+
+.pin-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+.pin-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pin-modal-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.pin-forgot-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+/* ===== TRANSACTION STATUS ===== */
+.tx-status {
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.tx-status.success {
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.tx-status.success p {
+  color: #166534;
+  font-weight: 600;
+}
+
+.tx-status.failure {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+
+.tx-status.failure p {
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* ===== TRANSACTION DETAILS ===== */
+.tx-details {
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .tx-details {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.tx-details h4 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.tx-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  font-size: 14px;
+}
+
+.tx-details-grid span:first-child {
+  color: #64748b;
+}
+
+.tx-details-grid span:last-child {
+  font-weight: 500;
+}
+
+/* ===== FORM LABEL ===== */
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
