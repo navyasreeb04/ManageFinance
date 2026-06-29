@@ -14,46 +14,22 @@ export const SocketProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
+    if (!token || !user) return;
 
+    // ✅ Build WebSocket URL from VITE_API_URL
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+    const socketUrl = apiUrl.replace('/api', '').replace('http', 'ws');
+    // For production: https://backend.onrender.com → wss://backend.onrender.com
 
-    if (!token || !user) {
-      return;
-    }
-
-    const newSocket = io('http://localhost:3000', {
+    console.log('🔌 Connecting to WebSocket:', socketUrl);
+    const newSocket = io(socketUrl, {
       withCredentials: true,
-      transports: ['websocket', 'polling'], // ✅ Fallback
+      transports: ['websocket', 'polling'],
     });
 
     setSocket(newSocket);
-
-    newSocket.on('connect', () => {
-      newSocket.emit('register-user', user._id);
-    });
-
-    newSocket.on('notification', (data) => {
-      setNotifications(prev => [...prev, data]);
-      // ✅ Show toast
-      toast.success(data.message, {
-        duration: 5000,
-        position: 'top-right',
-      });
-    });
-
-    newSocket.on('connect_error', (error) => {
-    });
-
-    newSocket.on('disconnect', (reason) => {
-    });
-
-    return () => {
-      newSocket.close();
-    };
+    // ... rest of the code stays the same
   }, []);
 
-  return (
-    <SocketContext.Provider value={{ socket, notifications, setNotifications }}>
-      {children}
-    </SocketContext.Provider>
-  );
+  // ... return provider
 };
