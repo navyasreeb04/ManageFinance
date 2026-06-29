@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 //we just create the server here
 const app = express();
+app.set('trust proxy', true);
 const cors = require("cors");
 const helmet = require("helmet"); 
 const rateLimit = require("express-rate-limit");
