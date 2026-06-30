@@ -1,17 +1,31 @@
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const brevo = require('@getbrevo/brevo');
 
-// ✅ Simple Gmail SMTP with App Password
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.APP_PASSWORD,
-  },
-});
+// ✅ Brevo API (NEVER expires, permanent free tier)
+const apiInstance = new brevo.TransactionalEmailsApi();
+const apiKey = apiInstance.authentications['apiKey'];
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
+const sendEmail = async (to, subject, text, html) => {
+  try {
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = { 
+      email: process.env.EMAIL_USER, 
+      name: 'ManageFinance' 
+    };
+    sendSmtpEmail.to = [{ email: to }];
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.textContent = text;
+    sendSmtpEmail.htmlContent = html;
+
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('✅ Email sent via Brevo');
+    return result;
+  } catch (error) {
+    console.error('❌ Brevo error:', error.response?.body || error.message);
+    throw error;
+  }
+};
 const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
