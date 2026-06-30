@@ -6,18 +6,13 @@ if (!API_KEY) {
   console.error('BREVO_API_KEY is missing!');
 }
 
-//Correct v2 syntax (works on Render)
+//This works with both v1 and v2 of Brevo SDK
 const apiInstance = new brevo.TransactionalEmailsApi();
-
-//Set API key using the correct method for v2
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
-  API_KEY
-);
+apiInstance.apiKey = API_KEY; // Direct assignment (compatible with both)
 
 const sendEmail = async (to, subject, text, html) => {
   if (!API_KEY) {
-    console.error('Cannot send email: BREVO_API_KEY missing');
+    console.error('Cannot send email: API key missing');
     return;
   }
 
@@ -40,7 +35,6 @@ const sendEmail = async (to, subject, text, html) => {
     throw error;
   }
 };
-
 
 // Registration Email
 async function sendRegistrationEmail(userEmail, name) {
