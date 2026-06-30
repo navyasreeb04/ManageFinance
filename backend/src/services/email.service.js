@@ -1,14 +1,18 @@
 require('dotenv').config();
-const brevo = require('@getbrevo/brevo');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
 const API_KEY = process.env.BREVO_API_KEY;
 if (!API_KEY) {
   console.error('BREVO_API_KEY is missing!');
 }
 
-//This works with both v1 and v2 of Brevo SDK
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.apiKey = API_KEY; // Direct assignment (compatible with both)
+//Initialize the client using the old SDK
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = API_KEY;
+
+//Create the API instance
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendEmail = async (to, subject, text, html) => {
   if (!API_KEY) {
@@ -17,7 +21,7 @@ const sendEmail = async (to, subject, text, html) => {
   }
 
   try {
-    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.sender = {
       email: process.env.EMAIL_USER,
       name: 'ManageFinance'
@@ -28,14 +32,13 @@ const sendEmail = async (to, subject, text, html) => {
     sendSmtpEmail.htmlContent = html;
 
     const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('Email sent via Brevo');
+    console.log('Email sent via Brevo (sib-api-v3-sdk)');
     return result;
   } catch (error) {
     console.error('Brevo error:', error.response?.body || error.message);
     throw error;
   }
 };
-
 // Registration Email
 async function sendRegistrationEmail(userEmail, name) {
   const subject = "Welcome to ManageFinance!";
