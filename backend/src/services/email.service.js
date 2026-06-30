@@ -1,12 +1,23 @@
 require('dotenv').config();
 const brevo = require('@getbrevo/brevo');
 
-// ✅ Brevo API (NEVER expires, permanent free tier)
-const apiInstance = new brevo.TransactionalEmailsApi();
-const apiKey = apiInstance.authentications['apiKey'];
-apiKey.apiKey = process.env.BREVO_API_KEY;
+// Check API key
+const apiKey = process.env.BREVO_API_KEY;
+if (!apiKey) {
+  console.error('❌ BREVO_API_KEY is not set in environment variables!');
+}
 
+// Brevo API setup
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.authentications['apiKey'].apiKey = apiKey;
+
+//sendEmail function
 const sendEmail = async (to, subject, text, html) => {
+  if (!apiKey) {
+    console.error('Cannot send email: BREVO_API_KEY is missing');
+    return { error: 'API key missing' };
+  }
+
   try {
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.sender = { 
@@ -19,26 +30,10 @@ const sendEmail = async (to, subject, text, html) => {
     sendSmtpEmail.htmlContent = html;
 
     const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('✅ Email sent via Brevo');
+    console.log('Email sent via Brevo');
     return result;
   } catch (error) {
-    console.error('❌ Brevo error:', error.response?.body || error.message);
-    throw error;
-  }
-};
-const sendEmail = async (to, subject, text, html) => {
-  try {
-    const info = await transporter.sendMail({
-      from: `"ManageFinance" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      text,
-      html,
-    });
-    console.log('✅ Email sent:', info.messageId);
-    return info;
-  } catch (error) {
-    console.error('❌ Email error:', error);
+    console.error('Brevo error:', error.response?.body || error.message);
     throw error;
   }
 };
