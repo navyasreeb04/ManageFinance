@@ -1,17 +1,16 @@
 require('dotenv').config();
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 
-const API_KEY = process.env.BREVO_API_KEY;
+// Trim API key to avoid hidden whitespace
+const API_KEY = process.env.BREVO_API_KEY ? process.env.BREVO_API_KEY.trim() : '';
 if (!API_KEY) {
   console.error('BREVO_API_KEY is missing!');
 }
 
-//Initialize the client using the old SDK
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = API_KEY;
 
-//Create the API instance
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendEmail = async (to, subject, text, html) => {
@@ -32,13 +31,15 @@ const sendEmail = async (to, subject, text, html) => {
     sendSmtpEmail.htmlContent = html;
 
     const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('Email sent via Brevo (sib-api-v3-sdk)');
+    console.log('Email sent via Brevo');
     return result;
   } catch (error) {
     console.error('Brevo error:', error.response?.body || error.message);
     throw error;
   }
 };
+
+
 // Registration Email
 async function sendRegistrationEmail(userEmail, name) {
   const subject = "Welcome to ManageFinance!";
