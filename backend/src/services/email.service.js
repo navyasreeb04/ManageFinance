@@ -1,15 +1,30 @@
 require('dotenv').config();
-const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const nodemailer = require('nodemailer');
+
+// ✅ Simple Gmail SMTP with App Password
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.APP_PASSWORD,
+  },
+});
 
 const sendEmail = async (to, subject, text, html) => {
-  await resend.emails.send({
-    from: `YourApp <${process.env.EMAIL_USER}>`, // Your Gmail stays here
-    to: [to],
-    subject,
-    text,
-    html,
-  });
+  try {
+    const info = await transporter.sendMail({
+      from: `"ManageFinance" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      text,
+      html,
+    });
+    console.log('✅ Email sent:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('❌ Email error:', error);
+    throw error;
+  }
 };
 
 
