@@ -20,7 +20,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Analytics from './pages/Analytics';
 import Blogs from './pages/Blogs'; // ADD THIS
-//import ForgotPassword from './pages/ForgotPassword';
+import ForgotPassword from './pages/ForgotPassword';
 import ResetPin from './pages/ResetPin';
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
               <Route path="/blogs" element={<Blogs />} /> 
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-             {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-pin" element={<ResetPin />} />
               
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

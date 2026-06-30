@@ -56,6 +56,21 @@ const Login = () => {
               />
             </div>
 
+            {/* ✅ Add Forgot Password link */}
+            <div style={{ textAlign: 'right' }}>
+              <Link 
+                to="/forgot-password" 
+                style={{ 
+                  color: '#2563eb', 
+                  fontSize: '14px',
+                  textDecoration: 'none',
+                  hover: { textDecoration: 'underline' }
+                }}
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
             <button type="submit" className="btn-primary w-full" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
