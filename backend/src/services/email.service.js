@@ -1,26 +1,31 @@
 require('dotenv').config();
 const brevo = require('@getbrevo/brevo');
 
-// Initialize Brevo API
-const apiKey = process.env.BREVO_API_KEY;
-if (!apiKey) {
-  console.error(' BREVO_API_KEY is missing!');
+const API_KEY = process.env.BREVO_API_KEY;
+if (!API_KEY) {
+  console.error('BREVO_API_KEY is missing!');
 }
 
+//Correct v2 syntax (works on Render)
 const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.authentications['apiKey'].apiKey = apiKey;
+
+//Set API key using the correct method for v2
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  API_KEY
+);
 
 const sendEmail = async (to, subject, text, html) => {
-  if (!apiKey) {
+  if (!API_KEY) {
     console.error('Cannot send email: BREVO_API_KEY missing');
     return;
   }
 
   try {
     const sendSmtpEmail = new brevo.SendSmtpEmail();
-    sendSmtpEmail.sender = { 
-      email: process.env.EMAIL_USER, 
-      name: 'ManageFinance' 
+    sendSmtpEmail.sender = {
+      email: process.env.EMAIL_USER,
+      name: 'ManageFinance'
     };
     sendSmtpEmail.to = [{ email: to }];
     sendSmtpEmail.subject = subject;
@@ -28,7 +33,7 @@ const sendEmail = async (to, subject, text, html) => {
     sendSmtpEmail.htmlContent = html;
 
     const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('Email sent via Brevo:', result);
+    console.log('Email sent via Brevo');
     return result;
   } catch (error) {
     console.error('Brevo error:', error.response?.body || error.message);
